@@ -1,0 +1,205 @@
+-- --------------------------------------------------------
+-- Host:                         localhost
+-- Server version:               8.0.23 - MySQL Community Server - GPL
+-- Server OS:                    Win64
+-- HeidiSQL Version:             10.2.0.5599
+-- --------------------------------------------------------
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET NAMES utf8 */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+
+
+-- Dumping database structure for bdsaasgeo
+DROP DATABASE IF EXISTS `bdsaasgeo`;
+CREATE DATABASE IF NOT EXISTS `bdsaasgeo` /*!40100 DEFAULT CHARACTER SET utf8 */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `bdsaasgeo`;
+
+-- Dumping structure for table bdsaasgeo.t001_usuarios
+DROP TABLE IF EXISTS `t001_usuarios`;
+CREATE TABLE IF NOT EXISTS `t001_usuarios` (
+  `ID_USUARIO` int NOT NULL AUTO_INCREMENT,
+  `PRIMER_NOMBRE` varchar(45) NOT NULL,
+  `SEGUNDO_NOMBRE` varchar(45) DEFAULT NULL,
+  `PRIMER_APELLIDO` varchar(45) DEFAULT NULL,
+  `SEGUNDO_APELLIDO` varchar(45) DEFAULT NULL,
+  `SEXO` int DEFAULT NULL,
+  `TIPO_DOCUMENTO` int DEFAULT NULL,
+  `NUMERO_DOCUMENTO` varchar(45) DEFAULT NULL,
+  `CORREO_ELECTRONICO` varchar(100) DEFAULT NULL,
+  `CELUAR` varchar(45) DEFAULT NULL,
+  `PASSWORD` varchar(45) DEFAULT NULL,
+  `T003_ROLES_ID_ROL` int NOT NULL,
+  PRIMARY KEY (`ID_USUARIO`),
+  KEY `fk_T001_USUARIOS_T003_ROLES_idx` (`T003_ROLES_ID_ROL`),
+  CONSTRAINT `fk_T001_USUARIOS_T003_ROLES` FOREIGN KEY (`T003_ROLES_ID_ROL`) REFERENCES `t003_roles` (`ID_ROL`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Dumping data for table bdsaasgeo.t001_usuarios: ~0 rows (approximately)
+DELETE FROM `t001_usuarios`;
+/*!40000 ALTER TABLE `t001_usuarios` DISABLE KEYS */;
+/*!40000 ALTER TABLE `t001_usuarios` ENABLE KEYS */;
+
+-- Dumping structure for table bdsaasgeo.t002_referencias
+DROP TABLE IF EXISTS `t002_referencias`;
+CREATE TABLE IF NOT EXISTS `t002_referencias` (
+  `ID_REFERENCIA` int NOT NULL AUTO_INCREMENT,
+  `ESTADO` varchar(1) NOT NULL,
+  `DOMINIO` varchar(45) DEFAULT NULL,
+  `RANGO_VALOR` varchar(45) DEFAULT NULL,
+  `DESCRIPCION` varchar(500) DEFAULT NULL,
+  PRIMARY KEY (`ID_REFERENCIA`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Dumping data for table bdsaasgeo.t002_referencias: ~0 rows (approximately)
+DELETE FROM `t002_referencias`;
+/*!40000 ALTER TABLE `t002_referencias` DISABLE KEYS */;
+/*!40000 ALTER TABLE `t002_referencias` ENABLE KEYS */;
+
+-- Dumping structure for table bdsaasgeo.t003_roles
+DROP TABLE IF EXISTS `t003_roles`;
+CREATE TABLE IF NOT EXISTS `t003_roles` (
+  `ID_ROL` int NOT NULL AUTO_INCREMENT,
+  `NOMBRE_ROL` varchar(45) DEFAULT NULL,
+  `TIPO_ROL` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`ID_ROL`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Dumping data for table bdsaasgeo.t003_roles: ~0 rows (approximately)
+DELETE FROM `t003_roles`;
+/*!40000 ALTER TABLE `t003_roles` DISABLE KEYS */;
+/*!40000 ALTER TABLE `t003_roles` ENABLE KEYS */;
+
+-- Dumping structure for table bdsaasgeo.t004_membresias
+DROP TABLE IF EXISTS `t004_membresias`;
+CREATE TABLE IF NOT EXISTS `t004_membresias` (
+  `ID_MEMBRESIA` int NOT NULL AUTO_INCREMENT,
+  `ESTADO` int DEFAULT NULL,
+  `NOMBRE_MEMBRESIA` varchar(250) DEFAULT NULL,
+  `DURACION` int DEFAULT NULL,
+  `PRECIO` double DEFAULT NULL,
+  PRIMARY KEY (`ID_MEMBRESIA`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Dumping data for table bdsaasgeo.t004_membresias: ~0 rows (approximately)
+DELETE FROM `t004_membresias`;
+/*!40000 ALTER TABLE `t004_membresias` DISABLE KEYS */;
+/*!40000 ALTER TABLE `t004_membresias` ENABLE KEYS */;
+
+-- Dumping structure for table bdsaasgeo.t004_memxt005_usr
+DROP TABLE IF EXISTS `t004_memxt005_usr`;
+CREATE TABLE IF NOT EXISTS `t004_memxt005_usr` (
+  `ID_RELACION` int NOT NULL AUTO_INCREMENT,
+  `ESTADO` int DEFAULT NULL,
+  `ID_MEMBRESIA` int DEFAULT NULL,
+  `ID_USUARIO` int DEFAULT NULL,
+  `FECHA_COMPRA` date DEFAULT NULL,
+  `FECHA_ACTIVACION` date DEFAULT NULL,
+  `T001_USUARIOS_ID_USUARIO` int NOT NULL,
+  `T004_MEMBRESIAS_ID_MEMBRESIA` int NOT NULL,
+  PRIMARY KEY (`ID_RELACION`),
+  KEY `fk_T004_MEMXT005_USR_T001_USUARIOS1_idx` (`T001_USUARIOS_ID_USUARIO`),
+  KEY `fk_T004_MEMXT005_USR_T004_MEMBRESIAS1_idx` (`T004_MEMBRESIAS_ID_MEMBRESIA`),
+  CONSTRAINT `fk_T004_MEMXT005_USR_T001_USUARIOS1` FOREIGN KEY (`T001_USUARIOS_ID_USUARIO`) REFERENCES `t001_usuarios` (`ID_USUARIO`),
+  CONSTRAINT `fk_T004_MEMXT005_USR_T004_MEMBRESIAS1` FOREIGN KEY (`T004_MEMBRESIAS_ID_MEMBRESIA`) REFERENCES `t004_membresias` (`ID_MEMBRESIA`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Dumping data for table bdsaasgeo.t004_memxt005_usr: ~0 rows (approximately)
+DELETE FROM `t004_memxt005_usr`;
+/*!40000 ALTER TABLE `t004_memxt005_usr` DISABLE KEYS */;
+/*!40000 ALTER TABLE `t004_memxt005_usr` ENABLE KEYS */;
+
+-- Dumping structure for table bdsaasgeo.t005_sedes
+DROP TABLE IF EXISTS `t005_sedes`;
+CREATE TABLE IF NOT EXISTS `t005_sedes` (
+  `ID_SEDE` int NOT NULL AUTO_INCREMENT,
+  `ESTADO` int DEFAULT NULL,
+  `NOMBRE_SEDE` varchar(250) DEFAULT NULL,
+  `LATITUD` double DEFAULT NULL,
+  `LONGITUD` double DEFAULT NULL,
+  `ID_CIUDAD` int DEFAULT NULL,
+  `ID_USUARIO` int DEFAULT NULL,
+  `T001_USUARIOS_ID_USUARIO` int NOT NULL,
+  PRIMARY KEY (`ID_SEDE`),
+  KEY `fk_T005_SEDES_T001_USUARIOS1_idx` (`T001_USUARIOS_ID_USUARIO`),
+  CONSTRAINT `fk_T005_SEDES_T001_USUARIOS1` FOREIGN KEY (`T001_USUARIOS_ID_USUARIO`) REFERENCES `t001_usuarios` (`ID_USUARIO`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Dumping data for table bdsaasgeo.t005_sedes: ~0 rows (approximately)
+DELETE FROM `t005_sedes`;
+/*!40000 ALTER TABLE `t005_sedes` DISABLE KEYS */;
+/*!40000 ALTER TABLE `t005_sedes` ENABLE KEYS */;
+
+-- Dumping structure for table bdsaasgeo.t005_sedes_x_t006_cursos
+DROP TABLE IF EXISTS `t005_sedes_x_t006_cursos`;
+CREATE TABLE IF NOT EXISTS `t005_sedes_x_t006_cursos` (
+  `T005_SEDES_ID_SEDE` int NOT NULL,
+  `T006_CURSOS_ID_CURSO` int NOT NULL,
+  PRIMARY KEY (`T005_SEDES_ID_SEDE`,`T006_CURSOS_ID_CURSO`),
+  KEY `fk_T005_SEDES_has_T006_CURSOS_T006_CURSOS1_idx` (`T006_CURSOS_ID_CURSO`),
+  KEY `fk_T005_SEDES_has_T006_CURSOS_T005_SEDES1_idx` (`T005_SEDES_ID_SEDE`),
+  CONSTRAINT `fk_T005_SEDES_has_T006_CURSOS_T005_SEDES1` FOREIGN KEY (`T005_SEDES_ID_SEDE`) REFERENCES `t005_sedes` (`ID_SEDE`),
+  CONSTRAINT `fk_T005_SEDES_has_T006_CURSOS_T006_CURSOS1` FOREIGN KEY (`T006_CURSOS_ID_CURSO`) REFERENCES `t006_cursos` (`ID_CURSO`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Dumping data for table bdsaasgeo.t005_sedes_x_t006_cursos: ~0 rows (approximately)
+DELETE FROM `t005_sedes_x_t006_cursos`;
+/*!40000 ALTER TABLE `t005_sedes_x_t006_cursos` DISABLE KEYS */;
+/*!40000 ALTER TABLE `t005_sedes_x_t006_cursos` ENABLE KEYS */;
+
+-- Dumping structure for table bdsaasgeo.t006_cursos
+DROP TABLE IF EXISTS `t006_cursos`;
+CREATE TABLE IF NOT EXISTS `t006_cursos` (
+  `ID_CURSO` int NOT NULL AUTO_INCREMENT,
+  `ESTADO` int DEFAULT NULL,
+  `CODIGO_CURSO` varchar(45) DEFAULT NULL,
+  `NOMBRE_CURSO` varchar(100) DEFAULT NULL,
+  `DESCRIPCION_CURSO` varchar(250) DEFAULT NULL,
+  `CREDITOS_CURSO` int DEFAULT NULL,
+  `CATEGORIA_CURSO` int DEFAULT NULL,
+  PRIMARY KEY (`ID_CURSO`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Dumping data for table bdsaasgeo.t006_cursos: ~0 rows (approximately)
+DELETE FROM `t006_cursos`;
+/*!40000 ALTER TABLE `t006_cursos` DISABLE KEYS */;
+/*!40000 ALTER TABLE `t006_cursos` ENABLE KEYS */;
+
+-- Dumping structure for table bdsaasgeo.t006_cursos_x_t007_grupos
+DROP TABLE IF EXISTS `t006_cursos_x_t007_grupos`;
+CREATE TABLE IF NOT EXISTS `t006_cursos_x_t007_grupos` (
+  `T006_CURSOS_ID_CURSO` int NOT NULL,
+  `T007_GRUPOS_ID_GRUPO` int NOT NULL,
+  PRIMARY KEY (`T006_CURSOS_ID_CURSO`,`T007_GRUPOS_ID_GRUPO`),
+  KEY `fk_T006_CURSOS_has_T007_GRUPOS_T007_GRUPOS1_idx` (`T007_GRUPOS_ID_GRUPO`),
+  KEY `fk_T006_CURSOS_has_T007_GRUPOS_T006_CURSOS1_idx` (`T006_CURSOS_ID_CURSO`),
+  CONSTRAINT `fk_T006_CURSOS_has_T007_GRUPOS_T006_CURSOS1` FOREIGN KEY (`T006_CURSOS_ID_CURSO`) REFERENCES `t006_cursos` (`ID_CURSO`),
+  CONSTRAINT `fk_T006_CURSOS_has_T007_GRUPOS_T007_GRUPOS1` FOREIGN KEY (`T007_GRUPOS_ID_GRUPO`) REFERENCES `t007_grupos` (`ID_GRUPO`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Dumping data for table bdsaasgeo.t006_cursos_x_t007_grupos: ~0 rows (approximately)
+DELETE FROM `t006_cursos_x_t007_grupos`;
+/*!40000 ALTER TABLE `t006_cursos_x_t007_grupos` DISABLE KEYS */;
+/*!40000 ALTER TABLE `t006_cursos_x_t007_grupos` ENABLE KEYS */;
+
+-- Dumping structure for table bdsaasgeo.t007_grupos
+DROP TABLE IF EXISTS `t007_grupos`;
+CREATE TABLE IF NOT EXISTS `t007_grupos` (
+  `ID_GRUPO` int NOT NULL AUTO_INCREMENT,
+  `ESTADO` int DEFAULT NULL,
+  `CUPO_ESTUDIANTES` int DEFAULT NULL,
+  `SEMESTRE` int DEFAULT NULL,
+  `TOTAL_ESTUDIANTES` int DEFAULT NULL,
+  PRIMARY KEY (`ID_GRUPO`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Dumping data for table bdsaasgeo.t007_grupos: ~0 rows (approximately)
+DELETE FROM `t007_grupos`;
+/*!40000 ALTER TABLE `t007_grupos` DISABLE KEYS */;
+/*!40000 ALTER TABLE `t007_grupos` ENABLE KEYS */;
+
+/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
+/*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
